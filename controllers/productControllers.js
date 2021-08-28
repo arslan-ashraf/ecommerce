@@ -1,47 +1,47 @@
 const mysql = require('mysql')
 
-let mysql_connection = mysql.createConnection({
+let mysql_connection = mysql.createPool({
 	user: process.env.SQL_USERNAME,
 	password: process.env.SQL_PASSWORD,
 	database: process.env.SQL_DATABASE_NAME,
 	host: process.env.HOST,
 })
 
-mysql_connection.connect(function (error){
-	if (error){
-		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-		console.log(error)
-		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-	}
-})
+// mysql_connection.connect(function (error){
+// 	if (error){
+// 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+// 		console.log(error)
+// 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+// 	}
+// })
 
-const connection_config = {
-	user: process.env.SQL_USERNAME,
-	password: process.env.SQL_PASSWORD,
-	database: process.env.SQL_DATABASE_NAME,
-	host: process.env.HOST
-}
+// const connection_config = {
+// 	user: process.env.SQL_USERNAME,
+// 	password: process.env.SQL_PASSWORD,
+// 	database: process.env.SQL_DATABASE_NAME,
+// 	host: process.env.HOST
+// }
 
-function handle_db_disconnect(){
-	mysql_connection = mysql.createConnection(connection_config)
-	mysql_connection.connect(function (error){
-		if (error){
-			console.log('database connection error')
-			setTimeout(handle_db_disconnect, 3000)
-		}	else {
-			console.log('database connected')
-		}
-	})
-	mysql_connection.on('error', function(error){
-		if (error.code == 'PROTOCOL_CONNECTION_LOST'){
-			handle_db_disconnect()
-		}	else {
-			console.log('failed to reconnect')
-		}
-	})
-}
+// function handle_db_disconnect(){
+// 	mysql_connection = mysql.createConnection(connection_config)
+// 	mysql_connection.connect(function (error){
+// 		if (error){
+// 			console.log('database connection error')
+// 			setTimeout(handle_db_disconnect, 3000)
+// 		}	else {
+// 			console.log('database connected')
+// 		}
+// 	})
+// 	mysql_connection.on('error', function(error){
+// 		if (error.code == 'PROTOCOL_CONNECTION_LOST'){
+// 			handle_db_disconnect()
+// 		}	else {
+// 			console.log('failed to reconnect')
+// 		}
+// 	})
+// }
 
-handle_db_disconnect()
+// handle_db_disconnect()
 
 function all_products_in_category(request, response){
 	let session = request.sessionID
