@@ -21,7 +21,7 @@
 	<% } %>
 	<% title = title.join('') %>
 	<div class="col-sm-4">
-		<h4><%= results[i].title %></h4>
+		<h4><%= results[i].title %> $<%= results[i].price %></h4>
 		<a href="/products/<%= category %>/<%= title %>/<%= results[i].id %>" >
 			<img src=<%= image %> alt="image" width=100%  height="auto">
 		</a>
@@ -39,7 +39,7 @@
 	<% } %>
 	<% title = title.join('') %>
 	<div class="col-sm-4">
-		<h4><%= results[i].title %></h4>
+		<h4><%= results[i].title %> $<%= results[i].price %></h4>
 		<a href="/products/<%= category %>/<%= title %>/<%= results[i].id %>" >
 			<img src="<%= image %>" alt="image" width=100%  height="auto">
 		</a>
