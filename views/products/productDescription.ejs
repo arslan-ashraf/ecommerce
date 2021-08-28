@@ -1,0 +1,57 @@
+<%- include('../partials/basetop') %>
+
+<% let image = null %>
+<% if (product[0].category_id == 1) { %>
+	<% image = "/images/exampleFurniture.png" %>
+<% } else if (product[0].category_id == 2) { %>
+	<% image = "/images/exampleElectronics.png" %>
+<% } else { %>
+	<% image = "/images/exampleOfficeSupplies.png" %>
+<% } %>
+
+<div class="hidden-div"><%= product[0].id %></div>
+<h4 class="product-title"><%= product[0].title %></h4>
+<div class="row row-cols-2">
+	<div class="col-6"><img src=<%= image %> alt="product image" width=100% height=auto></div>
+	<div class="co-4">
+		<h5><%= product[0].description %><h5>
+		<div class="price">$<%= product[0].price %></div>
+		<button id="add_to_cart" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			Add to cart
+		</button>
+		<a href="/cart"><button type="button" class="btn btn-outline-secondary">Checkout</button></a>
+	</div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Added to cart!</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script> 
+	let add_to_cart = document.querySelector('#add_to_cart')
+	let product_id = document.querySelector('.hidden-div').innerHTML
+	let product_title = document.querySelector('.product-title').innerHTML
+	let product_price = document.querySelector('.price').innerHTML.slice(1) * 1
+	let data = { id: product_id, title: product_title, price: product_price }
+	add_to_cart.addEventListener('click', function(event){
+		fetch('add-to-cart', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data)
+		}).then(result => {
+			console.log(result)
+		})
+	})
+</script>
+
+<%- include('../partials/basebottom') %>

@@ -1,0 +1,50 @@
+<%- include('../partials/basetop') %>
+
+
+<% let image = null %>
+<% let title = null %>
+<% if (results[0].category_id == 1) { %>
+	<% image = "/images/exampleFurniture.png" %>
+<% } else if (results[0].category_id == 2) { %>
+	<% image = "/images/exampleElectronics.png" %>
+<% } else { %>
+	<% image = "/images/exampleOfficeSupplies.png" %>
+<% } %>
+
+<div class="row">
+<% for(let i = 0; i < results.length; i++){ %>	
+	<% if (i == 3) break %>
+	<% title = results[i].title.split('') %>
+	<% for(let j = 0; j < title.length; j++){ %>
+		<% if (title[j] == " ") title[j] = '-' %>
+		<% title[j] = title[j].toLowerCase() %>
+	<% } %>
+	<% title = title.join('') %>
+	<div class="col-sm-4">
+		<h4><%= results[i].title %></h4>
+		<a href="/products/<%= category %>/<%= title %>/<%= results[i].id %>" >
+			<img src=<%= image %> alt="image" width=100%  height="auto">
+		</a>
+	</div>
+<% } %>
+</div>
+
+<div class="row">
+<% for(let i = 3; i < results.length; i++){ %>	
+	<% if (i == 6) break %>
+	<% title = results[i].title.split('') %>
+	<% for(let j = 0; j < title.length; j++){ %>
+		<% if (title[j] == " ") title[j] = '-' %>
+		<% title[j] = title[j].toLowerCase() %>
+	<% } %>
+	<% title = title.join('') %>
+	<div class="col-sm-4">
+		<h4><%= results[i].title %></h4>
+		<a href="/products/<%= category %>/<%= title %>/<%= results[i].id %>" >
+			<img src="<%= image %>" alt="image" width=100%  height="auto">
+		</a>
+	</div>
+<% } %>
+</div>
+
+<%- include('../partials/basebottom') %>
