@@ -5,7 +5,7 @@ const user_routes = require('./routes/authenticationRoutes')
 const product_routes = require('./routes/productRoutes')
 const mysql = require('mysql')
 
-const mysql_connection = mysql.createConnection({
+let mysql_connection = mysql.createConnection({
 	user: process.env.SQL_USERNAME,
 	password: process.env.SQL_PASSWORD,
 	database: process.env.SQL_DATABASE_NAME,
@@ -17,10 +17,36 @@ mysql_connection.connect(function (error){
 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
 		console.log(error)
 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-	}	else {
-		console.log('database connected')
 	}
 })
+
+const connection_config = {
+	user: process.env.SQL_USERNAME,
+	password: process.env.SQL_PASSWORD,
+	database: process.env.SQL_DATABASE_NAME,
+	host: process.env.HOST
+}
+
+function handle_db_disconnect(){
+	mysql_connection = mysql.createConnection(connection_config)
+	mysql_connection.connect(function (error){
+		if (error){
+			console.log('database connection error')
+			setTimeout(handle_db_disconnect, 3000)
+		}	else {
+			console.log('database connected')
+		}
+	})
+	mysql_connection.on('error', function(error){
+		if (error.code == 'PROTOCOL_CONNECTION_LOST'){
+			handle_db_disconnect()
+		}	else {
+			console.log('failed to reconnect')
+		}
+	})
+}
+
+handle_db_disconnect()
 
 const app = express()
 
