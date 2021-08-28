@@ -1,4 +1,46 @@
 		</div>
+		<script>
+			let search_bar = document.querySelector('.search-bar')
+			let search_results = document.querySelector('.search-results')
+			search_bar.value = ""
+			search_bar.addEventListener('keyup', function(){
+				let links = search_results.children
+				let n = links.length
+				for(let j = n-1; j >= 0; j--){
+					search_results.removeChild(links[j])
+				}
+				let typed_text = search_bar.value
+				if (typed_text.length > 0){	
+					let data = { text: typed_text }
+					fetch('search', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(data)
+					}).then(response => {
+						return response.json()
+					}).then(data => {
+						let products = data.products
+						for(let i = 0; i < products.length; i++){
+							let product = products[i]
+							let title = product.title
+							title = title.split('')
+							for(let j = 0; j < title.length; j++){
+								if (title[j] == " ") title[j] = '-'
+								title[j] = title[j].toLowerCase()
+							}
+							title = title.join('')
+							let anchor = document.createElement('a')
+							anchor.className = 'search-result-item'
+							anchor.href = "products/" + product.category + "/" + title + "/" + product.id
+							let li = document.createElement('li')
+							li.innerHTML = product.title
+							anchor.append(li)
+							search_results.append(anchor)
+						}
+					})
+				}
+			})
+		</script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 	</body>
 </html>

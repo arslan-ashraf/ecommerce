@@ -13,6 +13,11 @@
 			.my-button { text-decoration: none; color: green; }
 			.my-button:hover { color: white; }
 			.hidden-div { display: none; }
+			/*.search-bar { border-radius: 10px; width: 250px; border-color: blue; height: 35px; }*/
+			.search-results { left: 0; background: white; list-style-type: none; width: 315px; padding: 0; margin: 0 auto; border-radius: 1px blue; }
+			.search-result-item { border: 1px solid blue; text-decoration: none; width: 100%; display: inline-block; height: 26px; border-radius: 5px; }
+			.search-result-item.li {  }
+
 		</style>
 	</head>
 	<body>
@@ -42,10 +47,11 @@
 						</ul>
 						<div class="col-sm-4 me-auto">
 							<form class="d-flex">
-								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-								<button class="btn btn-outline-success" type="submit">Search</button>
+								<input class="form-control me-2 search-bar" type="search" placeholder="Search products ..." aria-label="Search" autofocus>
 							</form>
+							<!-- <input type="search" class="search-bar" placeholder="Search products"> -->
 						</div>
+
 						<ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex">
 							<% if (user) { %>
 								<li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
@@ -60,6 +66,6 @@
 					</div>
 			</div>
 		</nav>
-
+		<ul class="search-results"></ul>
 		<div class="container" id="container">
 			<br><br>

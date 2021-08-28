@@ -7,42 +7,6 @@ let mysql_connection = mysql.createPool({
 	host: process.env.HOST,
 })
 
-// mysql_connection.connect(function (error){
-// 	if (error){
-// 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-// 		console.log(error)
-// 		console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-// 	}
-// })
-
-// const connection_config = {
-// 	user: process.env.SQL_USERNAME,
-// 	password: process.env.SQL_PASSWORD,
-// 	database: process.env.SQL_DATABASE_NAME,
-// 	host: process.env.HOST
-// }
-
-// function handle_db_disconnect(){
-// 	mysql_connection = mysql.createConnection(connection_config)
-// 	mysql_connection.connect(function (error){
-// 		if (error){
-// 			console.log('database connection error')
-// 			setTimeout(handle_db_disconnect, 3000)
-// 		}	else {
-// 			console.log('database connected')
-// 		}
-// 	})
-// 	mysql_connection.on('error', function(error){
-// 		if (error.code == 'PROTOCOL_CONNECTION_LOST'){
-// 			handle_db_disconnect()
-// 		}	else {
-// 			console.log('failed to reconnect')
-// 		}
-// 	})
-// }
-
-// handle_db_disconnect()
-
 function all_products_in_category(request, response){
 	let session = request.sessionID
 	if (session){
@@ -134,4 +98,13 @@ function get_a_product(request, response){
 	}
 }
 
-module.exports = { all_products_in_category, get_a_product }
+function search(request, response){
+	let text = '%' + request.body.text + '%'
+	let search_product_query = "SELECT * FROM products WHERE title LIKE ?"
+	mysql_connection.query(search_product_query, [text], function(error, results){
+		if (error) console.log(error)
+		return response.status(201).json({ products: results })
+	})
+}
+
+module.exports = { all_products_in_category, get_a_product, search }
